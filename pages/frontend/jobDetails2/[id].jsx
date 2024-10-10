@@ -12,73 +12,65 @@ import { FaUserAstronaut } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { setMatchingJobDat } from '@/Utils/JobSlice'
-import { get_specified_job, get_my_applied_job } from '@/Services/job'
+import { get_specified_job } from '@/Services/job'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { InfinitySpin } from 'react-loader-spinner'
 import useSWR from 'swr'
 import { book_mark_job } from '@/Services/job/bookmark'
 
+
+
 export default function JobDetails() {
-    const router = useRouter();
+    const router = useRouter()
     const dispatch = useDispatch();
-    const { id } = router.query;
-    const JobData = useSelector(state => state?.Job?.JobData);
-    const machingData = useSelector(state => state?.Job?.matchingData);
-    const user = useSelector(state => state?.User?.userData);
+    const { id } = router.query
+    const JobData = useSelector(state => state?.Job?.JobData)
+    const machingData = useSelector(state => state?.Job?.matchingData)
+    const user = useSelector(state => state?.User?.userData)
     const [JobDetails, setJobDetails] = useState(null);
-    const [hasApplied, setHasApplied] = useState(false);
+
 
     const { data, error, isLoading } = useSWR(`/get-specified-job`, () => get_specified_job(id));
 
-    useEffect(() => {
-        if (data) setJobDetails(data?.data);
-    }, [data]);
 
-    if (error) toast.error(error);
+    useEffect(() => {
+        if (data) setJobDetails(data?.data)
+    }, [data])
+
+
+    if (error) toast.error(error)
+
 
     useEffect(() => {
         if (JobDetails) {
-            const filteredJobData = JobData?.filter((job) => job.job_category === JobDetails?.job_category);
-            const filteredJobData2 = filteredJobData?.filter((job) => job._id !== JobDetails?._id);
-            dispatch(setMatchingJobDat(filteredJobData2));
+            const filteredJobData = JobData?.filter((job) => job.job_category === JobDetails?.job_category)
+            const filteredJobData2 = filteredJobData?.filter((job) => job._id !== JobDetails?._id)
+            dispatch(setMatchingJobDat(filteredJobData2))
         }
-    }, [JobDetails, JobData, dispatch]);
-
-    // Nuevo useEffect para verificar si el usuario ha aplicado
-    useEffect(() => {
-        const checkApplicationStatus = async () => {
-            if (user) {
-                const response = await get_my_applied_job(user._id);
-                if (response?.success) {
-                    // Verificar si el usuario ha aplicado al trabajo actual
-                    const hasAppliedToJob = response?.data?.some((application) => application.job._id === id);
-                    setHasApplied(hasAppliedToJob);
-                }
-            }
-        };
-        checkApplicationStatus();
-    }, [id, user]);
-    
+    }, [JobDetails, JobData, dispatch])
 
 
     const handleApply = () => {
         if (!user) return toast.error('Please Login First');
-        router.push(`/frontend/applyJob/${id}`);
-    };
+        router.push(`/frontend/applyJob/${id}`)
+    }
+
 
     const handleBookMark = async () => {
+
         if (!user) return toast.error('Please Login First');
 
-        const data = { user: user?._id, job: JobDetails?._id };
+        const data = { user: user?._id, job: JobDetails?._id }
         const res = await book_mark_job(data);
         if (res.success) {
-            return toast.success(res.message);
-        } else {
-            return toast.error(res.message);
+            return toast.success(res.message)
         }
-    };
+        else {
+            return toast.error(res.message)
+        }
 
+    }
 
     return (
         <>
@@ -146,18 +138,11 @@ export default function JobDetails() {
                                         {
                                             JobDetails?.user?.email === user?.email ? (
                                                 <p className='text-xs text-red-500'>Estás viendo tu publicación</p>
-                                            ) : hasApplied ? (
-                                                <p className='text-xs text-green-500'>Ya has aplicado a este trabajo</p>
                                             ) : (
-                                                <div className='flex items-center justify-center'>
-                                                    <button onClick={handleApply} className='md:px-6 md:py-3 px-3 py-2 mt-2 md:mt-0 bg-indigo-500 rounded text-base tracking-widest uppercase transition-all duration-700 hover:bg-indigo-900 text-white'>
-                                                        Aplicar
-                                                    </button>
-                                                </div>
+                                                <p className='text-xs text-red-500'>Ya haz aplicado a este empleo</p>
                                             )
                                         }
                                     </div>
-
                                 </div>
                             </div>
                             <div className='w-full md:px-4 py-2 flex items-center md:items-start md:flex-row flex-col justify-start md:justify-center'>

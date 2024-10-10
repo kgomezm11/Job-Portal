@@ -30,8 +30,8 @@ const ApplyJobSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: 'pending',
-        enum: ['pending', 'accepted', 'rejected']
+        default: 'pendiente',
+        enum: ['pendiente', 'aprobado', 'rechazado']
     }
 }, { timestamps: true });
 

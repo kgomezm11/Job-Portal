@@ -44,7 +44,7 @@ export default function SavedJobDataTable() {
         },
         {
             name: 'Salario',
-            selector: row => '$' + row?.job?.salary,
+            selector: row => 'GTQ.' + row?.job?.salary,
         },
         {
             name: 'Acción',

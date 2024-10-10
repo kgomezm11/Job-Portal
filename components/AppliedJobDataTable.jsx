@@ -27,28 +27,28 @@ export default function AppliedJobDataTable() {
 
     const columns = [
         {
-            name: 'Apply Date',
+            name: 'Fecha envío',
             selector: row => new Date(`${row?.job?.createdAt}`).toLocaleDateString('en-GB'),
         },
         {
-            name: 'Company',
+            name: 'Empresa',
             selector: row => row?.job?.company,
         },
         {
-            name: 'Job title',
+            name: 'Título',
             selector: row => row?.job?.title,
         },
         {
-            name: 'Job Salary ',
-            selector: row => '$' + row?.job?.salary,
+            name: 'Salario ',
+            selector: row => 'GTQ.' + row?.job?.salary,
         },
         {
-            name: 'Status',
+            name: 'Estado',
             selector: row => <p className={`uppercase font-semibold ${row?.status === "approved" ? "text-green-500" : ""}  ${row?.status === "rejected" ? "text-red-600" : ""}`}>{row?.status}</p> ,
         },
         {
-            name: 'Action',
-            cell: row => <button onClick={() => router.push(`/frontend/jobDetails/${row?.job?._id}`)} className='md:px-2 md:py-2 px-1 py-1 text-xs text-indigo-600 hover:text-white my-2 hover:bg-indigo-600 border border-indigo-600   rounded transition-all duration-700  '>view Detail</button>
+            name: 'Acción',
+            cell: row => <button onClick={() => router.push(`/frontend/jobDetails2/${row?.job?._id}`)} className='md:px-2 md:py-2 px-1 py-1 text-xs text-indigo-600 hover:text-white my-2 hover:bg-indigo-600 border border-indigo-600   rounded transition-all duration-700  '>Ver detalle</button>
         },
     ];
 
@@ -79,7 +79,7 @@ export default function AppliedJobDataTable() {
                             data={filteredData}
                             keyField="id"
                             pagination
-                            title={`Total Applied Jobs: ${Data?.length}`}
+                            title={`Solicitudes totales: ${Data?.length}`}
                             fixedHeader
                             fixedHeaderScrollHeight='79%'
                             selectableRows
@@ -90,7 +90,7 @@ export default function AppliedJobDataTable() {
                                 <input className='w-60  py-2 px-2  outline-none  border-b-2 border-indigo-600' type={"search"}
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    placeholder={"Search with company name..."} />
+                                    placeholder={"Buscar por nombre de empresa..."} />
                             }
                             className="h-screen bg-white"
                         />

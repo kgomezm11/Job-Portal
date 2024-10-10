@@ -28,7 +28,7 @@ export default function ApplicationsDataTable({ application }) {
 
 
     const handleAcceptStatus = async (id) => {
-        const data = { id, status: "approved" }
+        const data = { id, status: "aprobado" }
         const res = await change_application_status(data);
         if (res.success) {
             router.push('/frontend/postedJob')
@@ -39,7 +39,7 @@ export default function ApplicationsDataTable({ application }) {
     }
 
     const handleRejectStatus = async (id) => {
-        const data = { id, status: "rejected" }
+        const data = { id, status: "rechazado" }
         const res = await change_application_status(data);
         if (res.success) {
             router.push('/frontend/postedJob')
@@ -58,7 +58,7 @@ export default function ApplicationsDataTable({ application }) {
         document.body.removeChild(link);
     }
 
-    
+
 
     const columns = [
         {
@@ -75,11 +75,7 @@ export default function ApplicationsDataTable({ application }) {
         },
         {
             name: 'CV',
-            selector: row => <button onClick={() => handleDownloadCV(row?.cv)} className=' w-20 py-2 text-xs text-indigo-600 hover:text-white my-2 hover:bg-indigo-600 border border-indigo-600 rounded transition-all duration-700'>Download CV</button>
-        },
-        {
-            name: 'Estado 2',
-            selector: row => <p className={`uppercase font-semibold ${row?.status === "aprobado" ? "text-green-500" : ""}  ${row?.status === "rechazado" ? "text-red-600" : ""}`}>{row?.status}</p>,
+            selector: row => <button onClick={() => handleDownloadCV(row?.cv)} className=' w-20 py-2 text-xs text-indigo-600 hover:text-white my-2 hover:bg-indigo-600 border border-indigo-600 rounded transition-all duration-700'>Descargar CV</button>
         },
         {
             name: 'Acción',
