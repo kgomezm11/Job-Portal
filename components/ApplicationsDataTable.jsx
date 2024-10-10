@@ -56,6 +56,7 @@ export default function ApplicationsDataTable({ application }) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        console.log(fileUrl)
     }
 
 
