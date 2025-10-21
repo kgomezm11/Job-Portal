@@ -18,7 +18,7 @@ gitleaks_scan:
     name: zricethezav/gitleaks:latest
     entrypoint: [""]
   script:
-    - echo "🔍 Analyzing with Gitleaks..."
+    - echo "Analyzing with Gitleaks..."
     - gitleaks detect --source . --report-path gitleaks-report.json --report-format json
   artifacts:
     when: always
