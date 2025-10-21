@@ -14,12 +14,3 @@ test:
   stage: test
   script:
     - echo "Testing project..."
-
-secret_detection:
-  stage: test
-  script:
-    - echo "Ejecutando Secret Detection..."
-  artifacts:
-    when: always
-    reports:
-      secret_detection: gl-secret-detection-report.json
