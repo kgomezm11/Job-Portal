@@ -14,3 +14,21 @@ test:
   stage: test
   script:
     - echo "Testing project..."
+
+validate_secrets:
+  stage: test
+  needs: ["secret_detection"]
+  script:
+    - echo "Validando reporte de Secret Detection..."
+    - cat gl-secret-detection-report.json
+    - |
+      if jq '.vulnerabilities | length' gl-secret-detection-report.json 2>/dev/null | grep -E '^[1-9]'; then
+        echo "Se encontraron leaks: Deteniendo..."
+        exit 1
+      else
+        echo "No se encontraron leaks"
+      fi
+  artifacts:
+    when: always
+    paths:
+      - gl-secret-detection-report.json
