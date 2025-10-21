@@ -2,6 +2,9 @@ stages:
   - build
   - test
 
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
 build:
   stage: build
   script:
@@ -12,15 +15,11 @@ test:
   script:
     - echo "Testing project..."
 
-gitleaks_scan:
+secret_detection:
   stage: test
-  image:
-    name: zricethezav/gitleaks:latest
-    entrypoint: [""]
   script:
-    - echo "Analyzing with Gitleaks..."
-    - gitleaks detect --source . --report-path gitleaks-report.json --report-format json
+    - echo "Ejecutando Secret Detection..."
   artifacts:
     when: always
-    paths:
-      - gitleaks-report.json
+    reports:
+      secret_detection: gl-secret-detection-report.json
