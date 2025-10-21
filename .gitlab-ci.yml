@@ -2,9 +2,6 @@ stages:
   - build
   - test
 
-include:
-  - template: Security/Secret-Detection.gitlab-ci.yml
-
 build:
   stage: build
   script:
@@ -15,20 +12,13 @@ test:
   script:
     - echo "Testing project..."
 
-validate_secrets:
+gitleaks_scan:
   stage: test
-  needs: ["secret_detection"]
+  image: zricethezav/gitleaks:latest
   script:
-    - echo "Validando reporte de Secret Detection..."
-    - cat gl-secret-detection-report.json || true
-    - |
-      if jq '.vulnerabilities | length' gl-secret-detection-report.json 2>/dev/null | grep -E '^[1-9]' ; then
-        echo "SE ENCONTRARON SECRETOS: fallando job"
-        exit 1
-      else
-        echo "No se encontraron secretos"
-      fi
+    - echo "Analyzing with Gitleaks..."
+    - gitleaks detect --source . --report-path gitleaks-report.json --report-format json
   artifacts:
     when: always
     paths:
-      - gl-secret-detection-report.json
+      - gitleaks-report.json
