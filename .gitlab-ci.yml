@@ -45,5 +45,7 @@ push_to_github:
     - git remote add github https://$GITHUB_USER:$GITHUB_PAT@github.com/$GITHUB_USER/$REPO.git
     - git checkout main
     - git push github main
+  artifacts:
+    when: on_success
   only:
     - main
