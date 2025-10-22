@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - deploy
 
 include:
   - template: Security/Secret-Detection.gitlab-ci.yml
@@ -36,3 +37,13 @@ validate_secrets:
     when: always
     paths:
       - gl-secret-detection-report.json
+
+
+push_to_github:
+  stage: deploy
+  script:
+    - git remote add github https://$GITHUB_USER:$GITHUB_PAT@github.com/$GITHUB_USER/$REPO.git
+    - git checkout main
+    - git push github main
+  only:
+    - main
