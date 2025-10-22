@@ -42,9 +42,7 @@ validate_secrets:
 push_to_github:
   stage: deploy
   script:
-    - git remote add github https://$GITHUB_USER:$GITHUB_PAT@github.com/$GITHUB_USER/$REPO.git
-    - git checkout main
-    - git push github main
+    - echo 'Todos los pipelines son correctos.'
   artifacts:
     when: on_success
   only:
