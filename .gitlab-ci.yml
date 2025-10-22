@@ -8,8 +8,10 @@ include:
 
 build:
   stage: build
+  image: node:20
   script:
     - echo "Building project..."
+    - npm install
     - npm run build
 
 test:
