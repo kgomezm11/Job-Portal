@@ -28,7 +28,7 @@ validate_secrets:
     - echo "Validando reporte de Secret Detection..."
     - cat gl-secret-detection-report.json
     - SECRETS=$(jq '.vulnerabilities | length' gl-secret-detection-report.json)
-    - echo "Se encontraron $SECRETS secretos"
+    - echo "Se encontraron $SECRETS leaks"
     - |
       if [ "$SECRETS" -gt 0 ]; then
         echo "Se encontraron leaks: Deteniendo..."
