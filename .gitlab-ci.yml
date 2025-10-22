@@ -18,11 +18,15 @@ test:
 validate_secrets:
   stage: test
   needs: ["secret_detection"]
+  image: alpine:latest
   script:
+    - apk add --no-cache jq
     - echo "Validando reporte de Secret Detection..."
     - cat gl-secret-detection-report.json
+    - SECRETS=$(jq '.vulnerabilities | length' gl-secret-detection-report.json)
+    - echo "Se encontraron $SECRETS secretos"
     - |
-      if jq '.vulnerabilities | length' gl-secret-detection-report.json 2>/dev/null | grep -E '^[1-9]'; then
+      if [ "$SECRETS" -gt 0 ]; then
         echo "Se encontraron leaks: Deteniendo..."
         exit 1
       else
